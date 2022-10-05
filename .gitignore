@@ -132,3 +132,6 @@ dmypy.json
 analisis_R_files
 .RData
 .Rhistory
+.Rprofile
+renv
+*.html
