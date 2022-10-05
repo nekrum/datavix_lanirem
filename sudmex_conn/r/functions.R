@@ -4,11 +4,6 @@ library(purrr)
 library(here)
 
 
-sitio <- c('https://zenodo.org/')
-pagina <- c('record/5123331')
-
-dir.create(here('descargas'), showWarnings=FALSE)
-
 ObtenerFuentesArchivos <- function(sitio, pagina, directorio_descargas) {
     contenido <- read_html(paste0(sitio, pagina)) 
     contenido %>% 
@@ -29,7 +24,7 @@ ObtenerFuentesArchivos <- function(sitio, pagina, directorio_descargas) {
 DescargaArchivos <- function(df_fuentes) {
     pwalk(
         df_fuentes,
-        ~ download.file(.x, .y)
+        ~ download.file(.x, .y) 
     )
 }
 

@@ -1,0 +1,104 @@
+---
+title: "Análisis exploratorio SUDMEX CONN"
+author: "Edgar"
+date: "2022-10-04"
+format: 
+  html:
+    code-fold: true
+    toc: true
+    df-print: paged
+    theme:
+      light: cerulean
+      dark: superhero
+---
+
+Para disminuir la carga visual de este notebook las funciones se encuentran en 
+el archivo `funciones.R` esto se ejecuta en un chunk especifico que se encuentra comentado para evitar 
+outpu inesecesario.
+
+```{r}
+#| label: setup
+#| echo: false 
+#| include: false
+source("functions.R")
+```
+
+## Preparar variables
+
+Definimos las variables para la extracción de los datos de la pagina de Zenodo. Y de paso generamos 
+el directorio donde podremos guardar los archivos. 
+
+:::{.callout-note}
+Al usar `here()` dejamos usamos la raíz del repositorio para guardar los archivos.
+:::
+
+```{r Prepara variables}
+sitio <- c('https://zenodo.org/')
+pagina <- c('record/5123330')
+dir.create(here('descargas'), showWarnings=FALSE)
+```
+
+## Links y rutas de descaragas
+
+A partir de las rutas de archivos en el sitio web podemos generar los links de descargas
+y las rutas para salvar los archivos, todo recolectado en un dataframe.
+
+```{r Generar links y paths}
+df_fuentes <- ObtenerFuentesArchivos(
+    sitio = sitio,
+    pagina = pagina,
+    directorio_descargas = here("descargas")
+)
+df_fuentes
+```
+
+## Descarga de archivos
+
+Podemos iterar sobre cada renglón de dataframe para descargar todos los archivos de 
+la página.
+
+```{r Descarga de archivos}
+df_demographics <- df_fuentes %>%
+    filter(grepl("demographics", url))
+
+DescargaArchivos(df_demographics)
+```
+
+Esta función descargara cada archivo que se encuentra en la columna de **url()**. 
+Puede filtrarse este dataframe para solo descargar los archivos necesarios, de lo 
+contrario se bajaran todos los archivos dentro de la página.
+
+:::{.callout-warning}
+Cada vez que se ejecuta este script se descargan los archivos.
+:::
+
+## Leer datos demográficos
+
+Podemos rehusar el dataframe  para leer el excel con los datos demográficos
+
+```{r}
+library(readxl)
+
+demo_data <- read_excel(df_demographics$destino, sheet = "Demographics")
+head(demo_data)
+```
+
+Leemos la definición de las variables de la segunda hoja dentro del archivo. 
+
+```{r}
+diccionario <- read_excel(
+    df_demographics$destino,
+    sheet = "Connectome_demographics",
+    range=cell_cols(c("A","D"))
+)
+diccionario
+```
+
+## Procesando los datos
+
+```{r}
+library(tidyr)
+demo_data_l <- demo_data %>%
+    pivot_longer(!rid, names_to="variables")
+head(demo_data_l)
+```
