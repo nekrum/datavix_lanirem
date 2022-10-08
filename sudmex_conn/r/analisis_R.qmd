@@ -4,17 +4,20 @@ author: "Edgar"
 date: "2022-10-04"
 format: 
   html:
+    self-contained: true
     code-fold: true
     toc: true
+    toc-title: Contenido
+    toc-location: left
     df-print: paged
     theme:
       light: cerulean
       dark: superhero
 ---
 
-Para disminuir la carga visual de este notebook las funciones se encuentran en 
-el archivo `funciones.R` esto se ejecuta en un chunk especifico que se encuentra comentado para evitar 
-outpu inesecesario.
+Para disminuir la carga visual de este notebook alguns de las funciones se encuentran en 
+el archivo `funciones.R` que se carga en un chunk especifico que no se incluye en la salida html 
+para evitar output inesecesario. [Incluir en el chunck la opción `#| include:false` permite ejecutar pero no incluir el código]{.aside}
 
 ```{r}
 #| label: setup
@@ -76,7 +79,7 @@ Cada vez que se ejecuta este script se descargan los archivos.
 
 Podemos rehusar el dataframe  para leer el excel con los datos demográficos
 
-```{r}
+```{r Lectura del archivo excel}
 library(readxl)
 
 demo_data <- read_excel(df_demographics$destino, sheet = "Demographics")
@@ -85,7 +88,7 @@ head(demo_data)
 
 Leemos la definición de las variables de la segunda hoja dentro del archivo. 
 
-```{r}
+```{r Lectura de hojas en excel}
 diccionario <- read_excel(
     df_demographics$destino,
     sheet = "Connectome_demographics",
@@ -94,11 +97,159 @@ diccionario <- read_excel(
 diccionario
 ```
 
-## Procesando los datos
+# Exploratory Data Analysis (EDA)
 
-```{r}
-library(tidyr)
-demo_data_l <- demo_data %>%
-    pivot_longer(!rid, names_to="variables")
-head(demo_data_l)
+Un paso mas allá de las herramientas clasicas como `str()`, `head()`, `tail()`, 
+`dim()`, `glimpse()`, `View()` y `summary()` estan los paquetes que dan información
+directa sobre la distribución de los valores o los valores faltantes.
+[Salvo la librería `glimpse()` de *dplyr* todas estas librerías se incluyen en R base ]{.aside}
+
+Para esto podemos usar dos librerías para hacer el análisis exploratorio, seguramente en la 
+comunidad de R habrá mas paquetes disponibles. Pero estos me han resultado útiles.
+
+## Skimr
+
+Esta librería data una información condensada de nuestros datos incluyendo 
+los datos ausentes, tipo de datos e incluso pequeños histogramas de las variables
+númericas. Su impresion en consola es excelente y su impresion en un reporte como 
+este funciona adecuadamente.
+
+```{r EDA con skim}
+library(skimr)
+
+skim(demo_data)
 ```
+
+### Skim agrupado
+
+Ademas soporta reportes agrupados por alguna de las variables involucradas. Sin
+embargo su uso es simple y puede resultar algo rigido.
+
+```{r Skim agrupado}
+demo_data %>% group_by(sex) %>% skim()
+
+```
+
+[Al usar un grupo todos los descriptivos se generan para cada categoría en el
+grupo]{.aside}
+
+## DataExplorer
+
+Este paquete tiene más herramientas para la exploración de datos y parece que cuenta 
+con una versión en texto y otra gráfica. Por ejemplo la función `introduce()` hace una pequeña
+descripción del dataset, mientras la función `plot_intro()` presenta un gráfico de 
+la misma información.
+
+### Introduce
+
+```{r EDA con DataExplorer}
+library(DataExplorer)
+
+introduce(demo_data)
+```
+
+### Introduce plot
+
+En mi opinión el gráfico que produce no cuenta con mucha información 
+pero es mas fácil de interpretar que el el comando de texto
+
+```{r Introduce plot}
+plot_intro(demo_data)
+```
+
+### Gráfico de Barras
+
+Cuenta con plots automáticos para generar multiples gráficos en un solo paso.
+La función `plot_bar()` permite generar gráficos de barras para cada variable
+del set de datos.
+
+```{r Bar plots con DataExplorer}
+plot_bar(demo_data)
+```
+
+### Correlación
+
+Si bien R base permite ejecutar correlaciones de forma fácil y sin dependencias
+de otras librerías, esta implementación tiene un resultado bueno y su implementación
+es bastante simple.
+
+
+:::{.callout-warning}
+Para obtener un buen resultado es importante procesar adecuadamente los registros
+faltantes así como codificar adecuadamente los tipos de variables.
+:::
+
+```{r Correlaciones con DataExplorer}
+plot_correlation(demo_data, maxcat=5L)
+```
+
+## summarytools
+
+### descr
+
+Esta librería también entrega descriptivos relacionados con los datos. Su funcionamiento 
+es muy parecido a **Skimr** aunque la salida a nivel terminal no es tan buena como la de skim
+
+```{r EDA con summarytools}
+library(summarytools)
+
+descr(demo_data)
+```
+
+### dfSummary
+
+Sin embargo la salida de este paquete para **rmarkdowm**, **quarto** y **html** es mucho mas
+estética aunque requiere de comandos extra como `print()` con el método render para que se 
+pueda ver directamente en la salida en `quatro()`.
+[La ejecución de `dfSummary()` sin los argumetos, por lo menos en Quarto escapa los caracteres y distorsiona el resultado]{.aside}
+
+```{r Impresion en HTLM de dfSummary}
+print(dfSummary(
+    demo_data,
+    varnumbers = FALSE, 
+    valid.col = FALSE,
+    graph.magnif = 0.76
+),method = 'render')
+```
+
+## Notas Finales
+
+Existen más paquetes que permiten realizar una exploración detalla y rápida de los datos,
+sin embargo un factor importante a considerar es la dependencia en otras librerías. Una recomendación
+es no incluir este tipo de análisis en el resultado final y solo usarlo de manera introductoria a los 
+datos. 
+
+### Sobre Quarto
+
+Este ejercicio también tiene como finalidad la  exploración de **quarto** considerando:
+
+- La integración de estos paquetes
+- La comparación de el render en **quarto** con el render de Rmarkdown
+- El uso de Visual Code como editor alternativo a Rstudio
+- Y como referencia al uso de quarto con otros lenguajes como python.
+
+Como una evaluación rápida que será ampliada con las subsequentes pruebas, 
+Quarto es una herramienta muy parecida a Rmarkdown y la migración a este sistema puede ser
+transparente. Enlisto pros y contras de este sistema/setup:
+
+#### Pros:
+
+- Las opciones de configuración para el resultado son mas que las presentes en Rmarkdown
+- Ademas estas características son faciles de configurar en el encabezado yaml y dentro de
+los chunks de código mediante el simbolo `#|`
+- Incluye características dentro del paquete que previamente requerían de paquetes extra 
+y configuraciones complejas [Con la simple definición un tema claro y uno oscuro el render html presenta un botón para cambiar entre ambos]{.aside}
+- Generar documentos no requiere de Rstudio para visualizar y obtener el resultado
+- Concentra la creación de presentaciones con varias librerías de javascript cuyo uso es
+transparente par el usuario.
+- Quarto en Rstudio funciona de igual forma que un RNotebook/ Rmarkdown.
+
+#### Contras:
+
+- Requiere la instalación del paquete a nivel de sistema. [Rmarkdown tambien requiere instalaciones pero estas pueden obtenerse al instalar el paquete]{.aside}
+- Su uso en sistemas externos a Rstudio (VScode) requiere de plugins y/o un proceso
+ejecutandose en segundo plano para ver las modificaciones en timpo real
+- De la mano con el punto anterior, los chunks de código no se ejecutan dentro del mismo
+documento como es el caso de Rmarkdown con Rstudio o de JupyterNotebook. Incluso con el plug in
+requiere de una terminal externa.
+
