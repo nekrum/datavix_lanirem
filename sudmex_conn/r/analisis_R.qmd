@@ -15,7 +15,7 @@ format:
       dark: superhero
 ---
 
-Para disminuir la carga visual de este notebook alguns de las funciones se encuentran en 
+Para disminuir la carga visual de este notebook algunas de las funciones se encuentran en 
 el archivo `funciones.R` que se carga en un chunk especifico que no se incluye en la salida html 
 para evitar output inesecesario. [Incluir en el chunck la opción `#| include:false` permite ejecutar pero no incluir el código]{.aside}
 
@@ -32,7 +32,7 @@ Definimos las variables para la extracción de los datos de la pagina de Zenodo.
 el directorio donde podremos guardar los archivos. 
 
 :::{.callout-note}
-Al usar `here()` dejamos usamos la raíz del repositorio para guardar los archivos.
+Al usar `here()` expande la ruta del repositorio para guardar los archivos.
 :::
 
 ```{r Prepara variables}
@@ -41,10 +41,10 @@ pagina <- c('record/5123330')
 dir.create(here('descargas'), showWarnings=FALSE)
 ```
 
-## Links y rutas de descaragas
+## Links y rutas de descargas
 
-A partir de las rutas de archivos en el sitio web podemos generar los links de descargas
-y las rutas para salvar los archivos, todo recolectado en un dataframe.
+A partir de las rutas de archivos en el sitio web podemos generar los links de descarga
+y las rutas para guardar los archivos, todo recolectado en un dataframe.
 
 ```{r Generar links y paths}
 df_fuentes <- ObtenerFuentesArchivos(
