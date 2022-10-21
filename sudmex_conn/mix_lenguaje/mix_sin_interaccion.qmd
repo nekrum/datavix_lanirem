@@ -26,17 +26,18 @@ Probar el uso de **chunk's** de código de Python y R en el mismo documento.
 
 La ejecución de código de cada lenguaje la llevan acabo motores que **Quarto** usa para interpretar cada comando. 
 [**Knitr** es una herramienta para la generación de reportes dinámicos que permite integrar R en documentos]{.aside}
-Por defecto se usa **Knitr** para ejecutar los chuncks de código R y el kernel de **Jupyter** [**Jupyter** es un component de Jupyter 
-Notebook siendo este un entorno interactivo de python basado en web]{.aside} para ejecutar los fragmentos de codigo Python. 
+Por defecto se usa **Knitr** para ejecutar los chunks de código R y el kernel de **Jupyter** [**Jupyter** es un 
+component de Jupyter Notebook siendo este un entorno interactivo de python basado en web]{.aside} para ejecutar los 
+fragmentos de código Python. 
 
 En un inicio parece que el solo mezclar chunks de código de estos lenguajes en el mismo documento 
 podría interpretar adecuadamente los comandos, pero al generar el archivo o previsualizarlo **Quarto** resuelve con un
-error que recomienda el uso de **reticulate**.[**Reticulate** es un programa que permite la ejecución de codigo Python
+error que recomienda el uso de **reticulate**.[**Reticulate** es un programa que permite la ejecución de código Python
 dentro de R]{.aside}
 
-Se puede evitar este error usando la opción `#| python.reticulate = FALSE` sinembargo esto permite la ejecución 
-del codigo pero sin interactuar. Es decir una variable creada por R no la puede usar Python y viceversa.
-[En Quarto la sintaxis `#|` dentro de un chunck de código proporciona opciones de ejecución a ese fragmento de código]{.aside}
+Se puede evitar este error usando la opción `#| python.reticulate = FALSE` sin embargo esto permite la ejecución 
+del código pero sin interactuar. Es decir una variable creada por R no la puede usar Python y viceversa.
+[En Quarto la sintaxis `#|` dentro de un chunk de código proporciona opciones de ejecución a ese fragmento de código]{.aside}
 
 
 ###  Código R
@@ -62,7 +63,7 @@ print([1,2,3,4])
 ### Interacción
 
 Sin embargo una ejecución directa como esta tiene sus desventajas, las variables resultantes de cualquiera de estos
-fragmentos de código no podran ser usadas por otros fragmentos. Generando un error que cancela la ejecución del comando
+fragmentos de código no podrán ser usadas por otros fragmentos. Generando un error que cancela la ejecución del comando
 **Quarto** sin generar un archivo de salida.
 
 ```{{python}}
@@ -71,7 +72,7 @@ print(x)
 ```
 
 Esto ocurre aun si usamos la sintaxis de `reticulate` para usar las variables entre los chunk's [Reticulate usa
-`r.variable` o `py$variable` para accesar las varibles en los ambientes R y python]{.aside}
+`r.variable` o `py$variable` para acceder a las variables en los ambientes R y python]{.aside}
 
 ```{{python}}
 #| python.reticulate = FALSE
@@ -80,11 +81,11 @@ print(r.x)
 
 ## Resultado
 
-Es posible ejecutar código Python con solo crear los chunck de código y agregar la opción `#| python.reticulate = FALSE` 
+Es posible ejecutar código Python con solo crear los chunk de código y agregar la opción `#| python.reticulate = FALSE` 
 pero el resultado de estos no se puede usar en fragmentos de código de otro lenguaje.
 
 :::{.callout-warning}
-Ejecutar codigo R solo requiere el interprete de comandos instalado, aunque la ejecución de **Quarto** es compatible con
+Ejecutar código R solo requiere el interprete de comandos instalado, aunque la ejecución de **Quarto** es compatible con
 `renv()`.
 Python puede usar el interprete instalado de sistema o un ambiente virtual siempre que **Quarto** se ejecute con el 
 ambiente cargado

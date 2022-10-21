@@ -25,13 +25,13 @@ Probar el uso de **chunk's** de código de Python y R en el mismo documento usan
 La ejecución de código se puede hacer usando diferentes motores para cada lenguaje.
 [**Knitr** es una herramienta para la generación de reportes dinámicos que permite integrar R en documentos]{.aside}
 **Quarto** usa por defecto **Knitr** para ejecutar R y el kernel de **Jupyter** para ejecutar python.
-[**Jupyter** es un componente de JupyterNotebooks que permite ejecutar codigo de R y python]{.aside}
+[**Jupyter** es un componente de JupyterNotebooks que permite ejecutar código de R y python]{.aside}
 
-Si usamos la opción `#| python.reticulate = FALSE` se puede ejecutar el codigo pero las variables generadas en un lenguaje
+Si usamos la opción `#| python.reticulate = FALSE` se puede ejecutar el código pero las variables generadas en un lenguaje
 no pueden ser usadas por el otro lenguaje.
 
 Para ejecutar chunk's de código que pueda ser procesado por ambos lenguajes  es necesario instalar y cargar **reticulate**,
-[**Reticulate** es un programa que permite la ejecución de codigo Python dentro de R]{.aside} que puede ser instalado 
+[**Reticulate** es un programa que permite la ejecución de código Python dentro de R]{.aside} que puede ser instalado 
 directamente en R o usando `renv()` para tener un ambiente replicable. Ademas se pueden usar en conjunto ambientes virtuales
 para el código Python.
 
@@ -46,19 +46,19 @@ Usar Reticulate requiere su instalación previa así como cargarlo en uno de los
 Con **Reticulate** podemos generar una variable en un chunk de R
 
 ```{r}
-# Codigo R cargando reticulate
+# Código R cargando reticulate
 library(reticulate)
 x <- installed.packages()[,1]
 x[1:5]
 ```
 
-### Codigo Python
+### Código Python
 
-Podemos usar la variable generada llamando el objeto `r` y la variable que generamos en el codigo anterior es un atributo
+Podemos usar la variable generada llamando el objeto `r` y la variable que generamos en el código anterior es un atributo
 de ese objeto.
 
 ```{python}
-# Usando variable generada en el codigo R
+# Usando variable generada en el código R
 y = len(r.x)
 y
 ```
@@ -67,7 +67,7 @@ Incluso podemos acceder las variables generadas en Python con código R accedien
 como nombre del elemento en la lista.
 
 ```{r}
-# Usando variable creada en el chunck de Pyuthon
+# Usando variable creada en el chuck de Python
 py$y
 ```
 
@@ -76,6 +76,6 @@ py$y
 Este método solo requiere de instalar **Reticulate** y **Jupyter** en Python que pueden estar instalados directamente
 en los interpretes instalados en el sistema o pueden estar instalados en ambientes virtuales configurados para el análisis.
 
-Quarto también puede ejecutar codigo R y Python usando unicamente el motor de Jupyter instalando un kernel para R
+Quarto también puede ejecutar código R y Python usando unicamente el motor de Jupyter instalando un kernel para R
 pero su configuración implica instalar el kernel en Jupyter, un paquete en R para comunicarse con el kernel y siendo
 en general una instalación mas elaborada que la que involucra **Reticulate**.
