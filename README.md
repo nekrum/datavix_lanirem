@@ -4,13 +4,18 @@ Ejercicios de visualización de datos de Lanirem, con algunas pruebas de concept
 de Quarto, paquetes de EDA y visualización.
 
 ###  Prueba de concepto Python y R en Quarto
+
 Quarto markdown con de R y Python funcionales:
+
+
 [Ejecución directa sin interacción](sudmex_conn/mix_lenguaje/mix_sin_interaccion.qmd)
 
 Render HTML:
 [Ejecución directa sin interacción](sudmex_conn/mix_lenguaje/mix_sin_interaccion.html)
 
 Quarto markdown de interacción de R y Python con interacción entre sus variables generadas:
+
+
 [Python y R con Reticulate](sudmex_conn/mix_lenguaje/mix_motor-reticulate.qmd)
 
 Render HTML:
