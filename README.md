@@ -11,10 +11,10 @@ Render HTML:
 [Ejecución directa sin interacción](sudmex_conn/mix_lenguaje/mix_sin_interaccion.html)
 
 Quarto markdown de interacción de R y Python con interacción entre sus variables generadas:
-[Python y R con Reticulate](sudmex_conn/mix_lenguaje/mix_sin_interaccion.qmd)
+[Python y R con Reticulate](sudmex_conn/mix_lenguaje/mix_motor-reticulate.qmd)
 
 Render HTML:
-[Python y R con Reticulate](sudmex_conn/mix_lenguaje/mix_sin_interaccion.qmd)
+[Python y R con Reticulate](sudmex_conn/mix_lenguaje/mix_motor-reticulate.html)
 
 
 ### Quarto y Jupyter Notebook
@@ -24,6 +24,9 @@ es que se puede obtener un output bien trabajado a partir de un jupyter notebook
 quarto es una alternativa que puede funcionar con varios lenguajes y un solo programa instalado.
 
 [EDA con Python](sudmex_conn/python/SUDMEX_CONN_Quatro.ipynb)
+
+Render HTML:
+[EDA con Python](sudmex_conn/python/SUDMEX_CONN_Quatro.html)
 
 > Este notebook funciona con una instalación estándar de Jupyter notebook.
 [Instalación de Jupyter Notebook](http://programacion.espol.edu.ec/%23/gu%C3%ADas-de-instalaci%C3%B3n/instalaci%C3%B3n-de-jupyter-notebook/)
@@ -35,6 +38,9 @@ Rstudio. Sin embargo permite el uso de cualquier editor para generar estos archi
 
 [EDA con R](sudmex_conn/r/analisis_R.qmd)
 
+
+Render HTML:
+[EDA con R](sudmex_conn/r/analisis_R.html)
 
 > **Nota:**
 > Para replicar estos ejercicios los paquetes necesarios  en los ejercicios, excepto en Python y R sin interacción, se usan
