@@ -134,4 +134,6 @@ analisis_R_files
 .Rhistory
 .Rprofile
 renv
-*.html
+.vscode
+/.quarto/
+/_site/
